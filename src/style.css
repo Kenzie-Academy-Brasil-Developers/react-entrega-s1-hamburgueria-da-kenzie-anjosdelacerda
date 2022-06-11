@@ -516,3 +516,69 @@ bottom: -16.67%; */
 
   cursor: pointer;
 }
+
+/*--------------------MOBILE FIRST -------------------- */
+
+@media (max-width: 425px) {
+  .universalBox {
+    display: grid;
+  }
+
+  .menu {
+    width: 414px;
+    height: 139px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 0.1rem;
+  }
+
+  .logoBox {
+    justify-content: center;
+    width: 150px;
+  }
+
+  .logo {
+    width: 145px;
+  }
+
+  .containerInputPesquisa {
+    padding: 0;
+    width: 382px;
+    height: 60px;
+    /* width: 60vw; */
+    padding: 0px 10px 0px 15px;
+  }
+
+  .menuPesquisa {
+    margin: 0;
+  }
+
+  .buttonPesquisa {
+    padding: 0;
+  }
+
+  .espacamentoContent {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .vitrine {
+    width: 100vw;
+    flex-wrap: nowrap;
+    display: grid;
+    scroll-snap-align: center;
+  }
+
+  .listaVitrine {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    /* display: grid;
+    scroll-snap-align: center; */
+  }
+
+  .cartBox {
+    margin: 1rem;
+  }
+}
