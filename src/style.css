@@ -299,6 +299,16 @@ bottom: -16.67%; */
   color: #828282;
 }
 
+.listCart .countBurguer {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #828282;
+}
+
 .listCart .nomeBurguer h3 {
   font-family: "Inter";
   font-style: normal;
@@ -525,7 +535,7 @@ bottom: -16.67%; */
   }
 
   .menu {
-    width: 414px;
+    width: 100vw;
     height: 139px;
     display: flex;
     flex-direction: column;
@@ -543,7 +553,6 @@ bottom: -16.67%; */
   }
 
   .containerInputPesquisa {
-    padding: 0;
     width: 382px;
     height: 60px;
     /* width: 60vw; */
@@ -552,10 +561,14 @@ bottom: -16.67%; */
 
   .menuPesquisa {
     margin: 0;
+    box-sizing: border-box;
   }
 
   .buttonPesquisa {
     padding: 0;
+    top: 0;
+    left: 0;
+    gap: 0;
   }
 
   .espacamentoContent {

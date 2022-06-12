@@ -36,14 +36,20 @@ function App() {
       valorTotal();
     } else {
       console.log("hamburguer já adicionado");
+
+      // const hamburguerPosition = currentSale.findIndex(
+      //   (hamburguer) => hamburguer.id === id
+      // );
+      // // console.log(hamburguerPosition);
+      // console.log(currentSale[hamburguerPosition]);
+      // console.log(currentSale[hamburguerPosition].count);
+
+      // currentSale[hamburguerPosition].count =
+      //   currentSale[hamburguerPosition].count + 1;
     }
   }
 
-  console.log(cartTotal);
-
   function valorTotal() {
-    console.log(currentSale);
-
     const price = currentSale?.reduce(
       (acumulador, item) => acumulador + item.price,
       0
@@ -51,6 +57,10 @@ function App() {
 
     setCartTotal(price);
   }
+
+  // function handleRmove(id){
+  //   const newArt =
+  // }
 
   return (
     <div className="universalBox">
