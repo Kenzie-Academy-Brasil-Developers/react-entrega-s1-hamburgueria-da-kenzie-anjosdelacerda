@@ -9,58 +9,95 @@ function App() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentSale, setCurrentSale] = useState([]);
-  const [cartTotal, setCartTotal] = useState(0);
+  const [pesquisa, setPesquisa] = useState();
+
+  // console.log(filteredProducts);
+
+  const valorTotal = currentSale.reduce(
+    (acc, hamburguer) => hamburguer.price * hamburguer.count + acc,
+    0
+  );
+
+  const [cartTotal, setCartTotal] = useState(valorTotal);
+
+  useEffect(() => {
+    const renderValue = currentSale.reduce(
+      (acc, hamburguer) => hamburguer.price * hamburguer.count + acc,
+      0
+    );
+    setCartTotal(renderValue);
+  }, [currentSale]);
 
   useEffect(() => {
     fetch("https://hamburgueria-kenzie-json-serve.herokuapp.com/products")
       .then((response) => response.json())
-      .then((response) => setProducts(response))
-      .catch((err) => console.log(err));
+      .then((response) => setProducts(response));
+    // .catch((err) => console.log(err));
   }, []);
 
-  function showProducts() {
-    const busca = products.filter(
-      (item) => item.name.toLowerCase() === filteredProducts.toLowerCase()
+  function handleSearch(event) {
+    console.log(pesquisa + " observa aqui nando");
+
+    if (pesquisa === undefined || pesquisa.length <= 1) {
+      setFilteredProducts(products);
+    }
+
+    setPesquisa(event.target.value);
+
+    const produtoPesquisado = products.filter(
+      (item) =>
+        item.name.toLowerCase().includes(pesquisa.toLowerCase()) ||
+        item.category.toLowerCase().includes(pesquisa.toLowerCase())
     );
 
-    setProducts(busca);
+    setFilteredProducts(produtoPesquisado);
   }
 
-  function handleClick(id) {
+  // setProducts(produtoPesquisado);
+
+  // console.log(produtoPesquisado);
+
+  // setFilteredProducts(produtoPesquisado);
+
+  // eslint-disable-next-line eqeqeq
+
+  // function showProducts() {
+
+  //     const busca = products.includes(
+  //       (item) => item.name.toLowerCase() === filteredProducts.toLowerCase()
+  //     );
+  //     console.log(busca);
+  //     setProducts(busca);
+
+  // }
+
+  function handleClickAddToCart(id) {
     const verificacao = currentSale.every((hamburguer) => hamburguer.id !== id);
 
     if (verificacao === true) {
       const compra = products?.find((item) => item.id === id);
 
-      setCurrentSale([...currentSale, compra]);
-      valorTotal();
-    } else {
-      console.log("hamburguer já adicionado");
+      compra.count = 1;
 
-      // const hamburguerPosition = currentSale.findIndex(
-      //   (hamburguer) => hamburguer.id === id
-      // );
-      // // console.log(hamburguerPosition);
-      // console.log(currentSale[hamburguerPosition]);
+      setCurrentSale([...currentSale, compra]);
+      // valorTotal();
+    } else {
+      const hamburguerPosition = currentSale.findIndex(
+        (hamburguer) => hamburguer.id === id
+      );
+      // console.log(hamburguerPosition);
+
       // console.log(currentSale[hamburguerPosition].count);
 
-      // currentSale[hamburguerPosition].count =
-      //   currentSale[hamburguerPosition].count + 1;
+      const newCurrentSale = [...currentSale];
+
+      newCurrentSale[hamburguerPosition].count += 1;
+
+      // console.log(newCurrentSale[hamburguerPosition]);
+
+      setCurrentSale(newCurrentSale);
     }
   }
-
-  function valorTotal() {
-    const price = currentSale?.reduce(
-      (acumulador, item) => acumulador + item.price,
-      0
-    );
-
-    setCartTotal(price);
-  }
-
-  // function handleRmove(id){
-  //   const newArt =
-  // }
 
   return (
     <div className="universalBox">
@@ -79,21 +116,22 @@ function App() {
               className="menuPesquisa"
               type="text"
               placeholder="Digitar pesquisa"
-              value={filteredProducts}
-              onChange={(event) => setFilteredProducts(event.target.value)}
+              value={pesquisa}
+              onChange={(event) => handleSearch(event)}
             ></input>
-            <button onClick={showProducts} className="buttonPesquisa">
-              Pesquisar
-            </button>
+            <button className="buttonPesquisa">Pesquisar</button>
           </div>
         </>
       </div>
       <div className="espacamentoContent">
-        <Productlist products={products} handleClick={handleClick} />
+        <Productlist
+          products={filteredProducts.length === 0 ? products : filteredProducts}
+          handleClick={handleClickAddToCart}
+        />
         <Cart
           currentSale={currentSale}
           setCurrentSale={setCurrentSale}
-          cartTotal={cartTotal}
+          valorTotal={cartTotal}
           setCartTotal={setCartTotal}
         />
       </div>

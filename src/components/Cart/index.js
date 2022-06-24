@@ -1,35 +1,43 @@
+// import { useEffect } from "react";
 import ProductCart from "../ProductCart";
 
-function Cart({ currentSale, setCurrentSale, cartTotal, setCartTotal }) {
+function Cart({ currentSale, setCurrentSale, valorTotal }) {
+  const renderValue = Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(valorTotal);
+
   function clearCart() {
     setCurrentSale([]);
-    setCartTotal(0);
   }
 
-  function deleteProduct(id) {
-    console.log(id);
+  // useEffect(() => {
+  //   const renderValue = currentSale.reduce(
+  //     (acc, hamburguer) => hamburguer.price * hamburguer.count + acc,
+  //     0
+  //   );
+  //   setCartTotal(renderValue);
+  // }, [currentSale, setCartTotal]);
 
+  function deleteProduct(id) {
     const hamburguerCart = currentSale.find(
       (hamburguer) => hamburguer.id === id
     );
 
+    console.log(hamburguerCart);
+
     const verificacao = currentSale.some((hamburguer) => hamburguer.id === id);
 
-    console.log(verificacao);
+    const repeat = [...currentSale];
 
-    console.log(hamburguerCart);
-    // console.log(hamburguerCart.count);
-
-    if (verificacao === true && hamburguerCart.count >= 1) {
+    if (verificacao === true && hamburguerCart.count > 1) {
       hamburguerCart.count = hamburguerCart.count - 1;
-    }
-    if (verificacao === true && hamburguerCart.count <= 1) {
+      setCurrentSale(repeat);
+    } else if (verificacao === true && hamburguerCart.count === 1) {
       const newCart = currentSale.filter((hamburguer) => hamburguer.id !== id);
       setCurrentSale(newCart);
     }
   }
-
-  console.log(currentSale);
 
   if (currentSale.length < 1) {
     return (
@@ -61,7 +69,7 @@ function Cart({ currentSale, setCurrentSale, cartTotal, setCartTotal }) {
                 name={hamburguer.name}
                 category={hamburguer.category}
                 price={hamburguer.price}
-                count={(hamburguer.count = 1)}
+                count={hamburguer.count}
                 deleteProduct={deleteProduct}
               />
             ))}
@@ -69,7 +77,7 @@ function Cart({ currentSale, setCurrentSale, cartTotal, setCartTotal }) {
           <div className="valorTotalBox">
             <div className="valorTotalBoxInfos">
               <h5 className="valorTotalBoxInfos-total">Total</h5>
-              <h5 className="precoTotal">R${cartTotal}</h5>
+              <h5 className="precoTotal">{renderValue}</h5>
             </div>
             <button onClick={clearCart} className="removerTodos">
               Remover todos
